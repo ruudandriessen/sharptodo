@@ -1,0 +1,38 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+    "noErrorTruncation": true,
+    "noImplicitReturns": true,
+    "resolveJsonModule": true,
+    "sourceMap": true,
+    "skipLibCheck": true,
+    "experimentalDecorators": true,
+    "useDefineForClassFields": true,
+    "types": ["vite/client"],
+    "isolatedModules": true,
+    "jsx": "react-jsx",
+  },
+  "include": [
+    "src/**/*",
+    "schema/**/*",
+    "scripts/**/*",
+    "test/**/*",
+    "__mocks__/**/*",
+    "*.config.ts",
+    "vite.config.mts"
+],
+"exclude": [
+    "node_modules",
+    "eslint-local-rules"
+],
+}
