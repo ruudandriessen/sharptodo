@@ -14,30 +14,30 @@ public class TodoController : ControllerBase
         this._repository = repository;
     }
 
-    [HttpGet(Name = "todo")]
+    [HttpGet]
     [ProducesResponseType<IEnumerable<TodoDto>>(StatusCodes.Status200OK)]
     public IResult GetTodos()
     {
         return Results.Ok(this._repository.Get());
     }
 
-    [HttpPut(Name = "todo/{id:guid}")]
+    [HttpPut("{id}")]
     [ProducesResponseType<TodoDto>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public IResult UpdateTodo(Guid id)
     {
-        Storage.Todo? todo = this._repository.Get(id);
-        if (todo == null)
+        Storage.Todo? Todo = this._repository.Get(id);
+        if (Todo == null)
         {
             return Results.NotFound();
         }
 
-        todo.Checked = !todo.Checked;
-        this._repository.Update(todo);
-        return Results.Ok(todo);
+        Todo.Checked = !Todo.Checked;
+        this._repository.Update(Todo);
+        return Results.Ok(Todo);
     }
 
-    [HttpPost(Name = "todo")]
+    [HttpPost]
     [ProducesResponseType<TodoDto>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public IResult AddTodo(PostTodoDto todoDTO)
@@ -50,5 +50,20 @@ public class TodoController : ControllerBase
         };
         this._repository.Add(todo);
         return Results.Ok(todo);
+    }
+
+    [HttpDelete("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public IResult DeleteTodo(Guid Id)
+    {
+        Storage.Todo? Todo = this._repository.Get(Id);
+        if (Todo == null)
+        {
+            return Results.NotFound();
+        }
+
+        this._repository.Delete(Todo);
+        return Results.Ok();
     }
 }

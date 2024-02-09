@@ -30,10 +30,10 @@ public class TodoFileRepository : ITodoRepository
         Save(todos);
     }
 
-    public void Delete(Guid Id)
+    public void Delete(Todo Todo)
     {
         var Todos = Load().ToList();
-        Todos.RemoveAll(t => t.Id == Id);
+        Todos.RemoveAll(t => t.Id == Todo.Id);
         Save(Todos);
     }
 
