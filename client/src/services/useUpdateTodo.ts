@@ -10,7 +10,7 @@ export const useUpdateTodo = () => {
         mutationFn: async (todo: any) => {
             await axios.put(`/api/todo/${todo.id}`, {
                 checked: todo.checked,
-            }, 
+            },
             {
                 headers: {
                     ...getAuthHeaders(),
