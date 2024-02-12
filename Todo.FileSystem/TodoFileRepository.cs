@@ -6,9 +6,9 @@ public class TodoFileRepository : ITodoRepository
 {
     private readonly string _path = "todos.json";
 
-    public IEnumerable<Todo> Get()
+    public async Task<IEnumerable<Todo>> Get()
     {
-        return Load().Select(t => new Todo
+        return (await Load()).Select(t => new Todo
         {
             Id = t.Id,
             Name = t.Name,
@@ -16,9 +16,9 @@ public class TodoFileRepository : ITodoRepository
         });
     }
 
-    public void Add(Todo todo)
+    public async Task Add(Todo todo)
     {
-        var todos = Load().ToList();
+        var todos = (await Load()).ToList();
         todos.Add(
             new TodoEntity
             {
@@ -27,19 +27,19 @@ public class TodoFileRepository : ITodoRepository
                 Checked = todo.Checked
             }
         );
-        Save(todos);
+        await Save(todos);
     }
 
-    public void Delete(Todo Todo)
+    public async Task Delete(Todo Todo)
     {
-        var Todos = Load().ToList();
+        var Todos = (await Load()).ToList();
         Todos.RemoveAll(t => t.Id == Todo.Id);
-        Save(Todos);
+        await Save(Todos);
     }
 
-    public void Update(Todo Todo)
+    public async Task Update(Todo Todo)
     {
-        var Todos = Load().ToList();
+        var Todos = (await Load()).ToList();
         var Index = Todos.FindIndex(t => t.Id == Todo.Id);
         Todos[Index] = new TodoEntity
         {
@@ -47,30 +47,31 @@ public class TodoFileRepository : ITodoRepository
             Name = Todo.Name,
             Checked = Todo.Checked
         };
-        Save(Todos);
+        await Save(Todos);
     }
 
-    public Todo? Get(Guid Id)
+    public async Task<Todo?> Get(Guid Id)
     {
-        var Todos = Get().ToList();
+        var Todos = (await Get()).ToList();
         return Todos.FirstOrDefault(t => t.Id == Id);
     }
 
-    private IEnumerable<TodoEntity> Load()
+    private async ValueTask<IEnumerable<TodoEntity>> Load()
     {
         if (!File.Exists(_path))
         {
             return new List<TodoEntity>();
         }
 
-        return JsonSerializer.Deserialize<IEnumerable<TodoEntity>>(
-            File.ReadAllText(_path)
-        );
+        using (FileStream fs = File.OpenRead(_path))
+        {
+            return await JsonSerializer.DeserializeAsync<IEnumerable<TodoEntity>>(fs);
+        }
     }
 
-    private void Save(IEnumerable<TodoEntity> Todos)
+    private Task Save(IEnumerable<TodoEntity> Todos)
     {
-        File.WriteAllText(
+        return File.WriteAllTextAsync(
             _path,
             JsonSerializer.Serialize(Todos)
         );
