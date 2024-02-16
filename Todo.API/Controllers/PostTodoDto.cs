@@ -2,5 +2,5 @@
 
 public class PostTodoDto
 {
-    public string name { get; set; }
+    public string Name { get; set; }
 }

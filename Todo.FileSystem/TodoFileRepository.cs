@@ -6,51 +6,34 @@ public class TodoFileRepository : ITodoRepository
 {
     private readonly string _path = "todos.json";
 
-    public async Task<IEnumerable<Todo>> Get()
+    public async Task<IEnumerable<TodoAo>> Get()
     {
-        return (await Load()).Select(t => new Todo
-        {
-            Id = t.Id,
-            Name = t.Name,
-            Checked = t.Checked
-        });
+        return (await Load()).Select(TodoEntityToAo.Map);
     }
 
-    public async Task Add(Todo todo)
+    public async Task Add(TodoAo todo)
     {
         var todos = (await Load()).ToList();
-        todos.Add(
-            new TodoEntity
-            {
-                Id = todo.Id,
-                Name = todo.Name,
-                Checked = todo.Checked
-            }
-        );
+        todos.Add(TodoAoToEntity.Map(todo));
         await Save(todos);
     }
 
-    public async Task Delete(Todo Todo)
+    public async Task Delete(TodoAo Todo)
     {
         var Todos = (await Load()).ToList();
         Todos.RemoveAll(t => t.Id == Todo.Id);
         await Save(Todos);
     }
 
-    public async Task Update(Todo Todo)
+    public async Task Update(TodoAo Todo)
     {
         var Todos = (await Load()).ToList();
         var Index = Todos.FindIndex(t => t.Id == Todo.Id);
-        Todos[Index] = new TodoEntity
-        {
-            Id = Todo.Id,
-            Name = Todo.Name,
-            Checked = Todo.Checked
-        };
+        Todos[Index] = TodoAoToEntity.Map(Todo);
         await Save(Todos);
     }
 
-    public async Task<Todo?> Get(Guid Id)
+    public async Task<TodoAo?> Get(Guid Id)
     {
         var Todos = (await Get()).ToList();
         return Todos.FirstOrDefault(t => t.Id == Id);

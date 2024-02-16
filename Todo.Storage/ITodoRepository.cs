@@ -2,9 +2,9 @@
 
 public interface ITodoRepository
 {
-    Task<IEnumerable<Todo>> Get();
-    Task Add(Todo todo);
-    Task Update(Todo todo);
-    Task Delete(Todo todo);
-    Task<Todo?> Get(Guid id);
+    Task<IEnumerable<TodoAo>> Get();
+    Task Add(TodoAo todo);
+    Task Update(TodoAo todo);
+    Task Delete(TodoAo todo);
+    Task<TodoAo?> Get(Guid id);
 }

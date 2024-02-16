@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using Todo.Storage;
-
 namespace Todo.API.Controllers;
 
 [ApiController]
@@ -16,54 +15,53 @@ public class TodoController : ControllerBase
 
     [HttpGet]
     [ProducesResponseType<IEnumerable<TodoDto>>(StatusCodes.Status200OK)]
-    public async Task<IResult> GetTodos()
+    public async Task<ActionResult<IEnumerable<TodoDto>>> GetTodos()
     {
-        return Results.Ok(await this._repository.Get());
+        var TodoList = await this._repository.Get();
+        return Ok(TodoList.Select(TodoAoToDto.Map));
     }
 
     [HttpPut("{id}")]
     [ProducesResponseType<TodoDto>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IResult> UpdateTodo(Guid id)
+    public async Task<ActionResult<TodoDto>> UpdateTodo(Guid id)
     {
-        Storage.Todo? Todo = await this._repository.Get(id);
+        TodoAo? Todo = await this._repository.Get(id);
         if (Todo == null)
         {
-            return Results.NotFound();
+            return NotFound();
         }
 
         Todo.Checked = !Todo.Checked;
         await this._repository.Update(Todo);
-        return Results.Ok(Todo);
+        return Ok(TodoAoToDto.Map(Todo));
     }
 
     [HttpPost]
     [ProducesResponseType<TodoDto>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IResult> AddTodo(PostTodoDto todoDTO)
+    public async Task<ActionResult<TodoDto>> AddTodo(PostTodoDto todoDTO)
     {
-        Storage.Todo todo = new Storage.Todo
+        var todo = new TodoAo
         {
-            Id = Guid.NewGuid(),
-            Name = todoDTO.name,
-            Checked = false
+            Name = todoDTO.Name,
         };
         await this._repository.Add(todo);
-        return Results.Ok(todo);
+        return Ok(TodoAoToDto.Map(todo));
     }
 
     [HttpDelete("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IResult> DeleteTodo(Guid Id)
+    public async Task<ActionResult> DeleteTodo(Guid Id)
     {
-        Storage.Todo? Todo = await this._repository.Get(Id);
+        TodoAo? Todo = await this._repository.Get(Id);
         if (Todo == null)
         {
-            return Results.NotFound();
+            return NotFound();
         }
 
         await this._repository.Delete(Todo);
-        return Results.Ok();
+        return Ok();
     }
 }

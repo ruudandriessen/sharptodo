@@ -21,13 +21,13 @@ public class TestTodoController
     {
         _mockRepository
             .Setup(repo => repo.Get())
-            .Returns(new List<Storage.Todo>());
+            .Returns(new List<TodoAo>());
 
         var result = _controller.GetTodos();
 
-        Assert.IsType<Ok<IEnumerable<Storage.Todo>>>(result);
+        Assert.IsType<Ok<IEnumerable<TodoAo>>>(result);
 
-        var okResult = (Ok<IEnumerable<Storage.Todo>>)result;
+        var okResult = (Ok<IEnumerable<TodoAo>>)result;
         Assert.NotNull(okResult.Value);
     }
 
@@ -44,7 +44,7 @@ public class TestTodoController
     public void TestTodoItemUpdate200()
     {
         var guid = new Guid();
-        var resultingTodo = new Storage.Todo
+        var resultingTodo = new TodoAo
         {
             Id = guid,
             Checked = false,
@@ -57,8 +57,8 @@ public class TestTodoController
 
         var result = _controller.UpdateTodo(guid);
 
-        Assert.IsType<Ok<Storage.Todo>>(result);
-        var okResult = (Ok<Storage.Todo>)result;
+        Assert.IsType<Ok<TodoAo>>(result);
+        var okResult = (Ok<TodoAo>)result;
 
         Assert.NotNull(okResult.Value);
         Assert.Equal(okResult.Value, resultingTodo);
