@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Todo.Storage", "Todo.Storag
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Todo.Test", "Todo.Test\Todo.Test.csproj", "{5754A8AB-54C1-4E49-B99C-BC5061521EE4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Todo.SqlServer", "Todo.SqlServer\Todo.SqlServer.csproj", "{F7C8D4BB-459E-4C28-8D2A-99A8323EA7F9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{5754A8AB-54C1-4E49-B99C-BC5061521EE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5754A8AB-54C1-4E49-B99C-BC5061521EE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5754A8AB-54C1-4E49-B99C-BC5061521EE4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7C8D4BB-459E-4C28-8D2A-99A8323EA7F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7C8D4BB-459E-4C28-8D2A-99A8323EA7F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7C8D4BB-459E-4C28-8D2A-99A8323EA7F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7C8D4BB-459E-4C28-8D2A-99A8323EA7F9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

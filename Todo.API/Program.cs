@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using Todo.SqlServer;
 using Todo.Storage;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,8 +11,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddDbContext<TodoContext>();
+
 // Setup DI into controllers
-builder.Services.AddScoped<ITodoRepository, TodoFileRepository>();
+builder.Services.AddScoped<ITodoRepository, TodoSqlServer>();
 
 var app = builder.Build();
 
