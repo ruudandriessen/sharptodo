@@ -1,3 +1,4 @@
+using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Todo.Storage;
@@ -45,9 +46,15 @@ public class TodoController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<TodoDto>> AddTodo(PostTodoDto todoDTO)
     {
+        var Jwt = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+        var handler = new JwtSecurityTokenHandler();
+        var Token = handler.ReadJwtToken(Jwt);
+        var Email = Token.Payload["email"].ToString();
+
         var todo = new TodoAo
         {
             Name = todoDTO.Name,
+            UserId = Email,
         };
         await this._repository.Add(todo);
         return Ok(TodoAoToDto.Map(todo));

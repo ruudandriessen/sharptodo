@@ -20,7 +20,6 @@ public class UserController : ControllerBase
     [ProducesResponseType<TodoDto>(StatusCodes.Status200OK)]
     public async Task<ActionResult<TodoDto>> Login()
     {
-
         var Jwt = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
         var handler = new JwtSecurityTokenHandler();
         var Token = handler.ReadJwtToken(Jwt);
