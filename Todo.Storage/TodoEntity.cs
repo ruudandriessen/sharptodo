@@ -7,4 +7,8 @@ public class TodoEntity
     public string Name { get; set; }
 
     public Guid Id { get; set; }
+
+    // Foreign key
+    public Guid? UserId { get; set; }
+    public UserEntity? User { get; set; }
 }
