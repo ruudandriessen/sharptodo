@@ -8,6 +8,7 @@ import { useTodos } from '../services/useTodos';
 import { useCreateTodo } from '../services/useCreateTodo';
 import { useUpdateTodo } from '../services/useUpdateTodo';
 import { useDeleteTodo } from '../services/useDeleteTodo';
+import { GoogleLogin } from '@react-oauth/google';
 
 const FlexRowWrapper = styled.div`
    display: flex;
@@ -39,17 +40,17 @@ export const TodoList = () => {
     const deleteTodo = useDeleteTodo();
 
     return <Wrapper>
-        {/* <GoogleLogin
+        <GoogleLogin
             useOneTap={true}
             onSuccess={(credentialResponse) => {
                 sessionStorage.setItem('token', credentialResponse.credential!);
             }}
-        /> */}
+        />
         <FlexRowWrapper>
             <Text fontSize='5xl' as='b'>My tasks</Text>
-            <IconButton 
-                aria-label="Toggle color mode" 
-                onClick={toggleColorMode} 
+            <IconButton
+                aria-label="Toggle color mode"
+                onClick={toggleColorMode}
                 size="lg"
                 icon={colorMode === 'dark' ? <SunIcon></SunIcon> : <MoonIcon></MoonIcon>}
             >
@@ -65,20 +66,20 @@ export const TodoList = () => {
             />)}
         </FlexColumnWrapper>
         <FlexRowWrapper>
-            <Input  
-                placeholder='Type something to do...'  
-                value={todoName} 
+            <Input
+                placeholder='Type something to do...'
+                value={todoName}
                 size={'lg'}
-                onChange={e => setTodoName(e.target.value)} 
+                onChange={e => setTodoName(e.target.value)}
             />
-            <Button   
-                colorScheme='teal' 
-                size='lg' 
+            <Button
+                colorScheme='teal'
+                size='lg'
                 onClick={() => {
                     createTodo.mutate(todoName);
                     setTodoName('');
-                }} 
-                isDisabled={todoName === ''} 
+                }}
+                isDisabled={todoName === ''}
                 isLoading={createTodo.isPending}
             >
                     Create
