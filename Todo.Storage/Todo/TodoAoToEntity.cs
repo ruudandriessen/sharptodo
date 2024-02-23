@@ -8,7 +8,8 @@ public class TodoAoToEntity
         {
             Id = todo.Id,
             Name = todo.Name,
-            Checked = todo.Checked
+            Checked = todo.Checked,
+            UserId = todo.UserId
         };
     }
 }
