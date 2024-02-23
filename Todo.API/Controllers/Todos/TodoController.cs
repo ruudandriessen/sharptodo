@@ -29,10 +29,20 @@ public class TodoController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<TodoDto>> UpdateTodo(Guid id)
     {
+        var Jwt = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+        var handler = new JwtSecurityTokenHandler();
+        var Token = handler.ReadJwtToken(Jwt);
+        var Email = Token.Payload["email"].ToString();
+
         TodoAo? Todo = await this._repository.Get(id);
         if (Todo == null)
         {
             return NotFound();
+        }
+
+        if (Todo.UserId != Email)
+        {
+            return Unauthorized();
         }
 
         Todo.Checked = !Todo.Checked;
@@ -66,10 +76,20 @@ public class TodoController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> DeleteTodo(Guid Id)
     {
+        var Jwt = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+        var handler = new JwtSecurityTokenHandler();
+        var Token = handler.ReadJwtToken(Jwt);
+        var Email = Token.Payload["email"].ToString();
+
         TodoAo? Todo = await this._repository.Get(Id);
         if (Todo == null)
         {
             return NotFound();
+        }
+
+        if (Todo.UserId != Email)
+        {
+            return Unauthorized();
         }
 
         await this._repository.Delete(Todo);
