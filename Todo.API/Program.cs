@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Todo.SqlServer;
 using Todo.Storage;
 
@@ -15,6 +15,12 @@ builder.Services.AddDbContext<TodoContext>();
 
 // Setup DI into controllers
 builder.Services.AddScoped<ITodoRepository, TodoSqlServer>();
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        // add config
+    });
 
 var app = builder.Build();
 
