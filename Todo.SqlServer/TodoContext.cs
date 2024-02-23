@@ -6,7 +6,7 @@ namespace Todo.SqlServer;
 public class TodoContext : DbContext
 {
     public DbSet<TodoEntity> Todos { get; set; }
-    public DbSet<TodoEntity> Users { get; set; }
+    public DbSet<UserEntity> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

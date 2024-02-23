@@ -17,6 +17,7 @@ builder.Services.AddDbContext<TodoContext>();
 
 // Setup DI into controllers
 builder.Services.AddScoped<ITodoRepository, TodoSqlServer>();
+builder.Services.AddScoped<IUserRepository, UserSqlServer>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>

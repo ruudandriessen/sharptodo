@@ -9,6 +9,8 @@ import { useCreateTodo } from '../services/useCreateTodo';
 import { useUpdateTodo } from '../services/useUpdateTodo';
 import { useDeleteTodo } from '../services/useDeleteTodo';
 import { GoogleLogin } from '@react-oauth/google';
+import { useMutation } from '@tanstack/react-query';
+import axios from 'axios';
 
 const FlexRowWrapper = styled.div`
    display: flex;
@@ -34,6 +36,14 @@ export const TodoList = () => {
     const { colorMode, toggleColorMode } = useColorMode();
     const [ todoName, setTodoName ] = useState('');
 
+    const { mutateAsync: postLogin } = useMutation({
+        mutationFn:async (token: string) => {
+            await axios.post('/api/login', null, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+        }
+    });
+
     const { data: todos } = useTodos();
     const createTodo = useCreateTodo();
     const updateTodo = useUpdateTodo();
@@ -42,7 +52,8 @@ export const TodoList = () => {
     return <Wrapper>
         <GoogleLogin
             useOneTap={true}
-            onSuccess={(credentialResponse) => {
+            onSuccess={async (credentialResponse) => {
+                await postLogin(credentialResponse.credential!);
                 sessionStorage.setItem('token', credentialResponse.credential!);
             }}
         />
