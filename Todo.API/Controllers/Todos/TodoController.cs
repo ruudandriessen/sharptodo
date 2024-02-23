@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Todo.Storage;
 namespace Todo.API.Controllers;
@@ -21,6 +22,7 @@ public class TodoController : ControllerBase
         return Ok(TodoList.Select(TodoAoToDto.Map));
     }
 
+    [Authorize]
     [HttpPut("{id}")]
     [ProducesResponseType<TodoDto>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -37,6 +39,7 @@ public class TodoController : ControllerBase
         return Ok(TodoAoToDto.Map(Todo));
     }
 
+    [Authorize]
     [HttpPost]
     [ProducesResponseType<TodoDto>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -50,6 +53,7 @@ public class TodoController : ControllerBase
         return Ok(TodoAoToDto.Map(todo));
     }
 
+    [Authorize]
     [HttpDelete("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
