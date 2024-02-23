@@ -1,4 +1,6 @@
+using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Todo.SqlServer;
 using Todo.Storage;
 
@@ -19,7 +21,19 @@ builder.Services.AddScoped<ITodoRepository, TodoSqlServer>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
-        // add config
+        var JwtToken = "289832142171-4pgrkds4cptbdrslrppgoontkss38ejt.apps.googleusercontent.com";
+        var JwtIssuer = "https://accounts.google.com";
+
+        options.Authority = JwtIssuer;
+
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidIssuer = JwtIssuer,
+            ValidAudience = JwtToken,
+        };
     });
 
 var app = builder.Build();
