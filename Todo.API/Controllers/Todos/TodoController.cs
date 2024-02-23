@@ -1,4 +1,5 @@
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Todo.Storage;
@@ -29,10 +30,7 @@ public class TodoController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<TodoDto>> UpdateTodo(Guid id)
     {
-        var Jwt = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-        var handler = new JwtSecurityTokenHandler();
-        var Token = handler.ReadJwtToken(Jwt);
-        var Email = Token.Payload["email"].ToString();
+        var Email = User.Email();
 
         TodoAo? Todo = await this._repository.Get(id);
         if (Todo == null)
@@ -56,11 +54,7 @@ public class TodoController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<TodoDto>> AddTodo(PostTodoDto todoDTO)
     {
-        var Jwt = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-        var handler = new JwtSecurityTokenHandler();
-        var Token = handler.ReadJwtToken(Jwt);
-        var Email = Token.Payload["email"].ToString();
-
+        var Email = User.Email();
         var todo = new TodoAo
         {
             Name = todoDTO.Name,
@@ -76,11 +70,7 @@ public class TodoController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> DeleteTodo(Guid Id)
     {
-        var Jwt = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-        var handler = new JwtSecurityTokenHandler();
-        var Token = handler.ReadJwtToken(Jwt);
-        var Email = Token.Payload["email"].ToString();
-
+        var Email = User.Email();
         TodoAo? Todo = await this._repository.Get(Id);
         if (Todo == null)
         {
